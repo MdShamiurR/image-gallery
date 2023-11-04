@@ -1,8 +1,7 @@
+// import addImg from "../../../../images/addImg.png";
 
 
-
-
-const GalleryCard = ({ gallery, index }) => {
+const GalleryCard = ({gallery,index}) => {
   const { img,gallery_id } = gallery;
 
 
@@ -19,15 +18,13 @@ const GalleryCard = ({ gallery, index }) => {
         border: "1px solid gray",
         cursor: "move",
         borderRadius: "10px",
-        
       }}
     >
-      
+      <div>
         <img src={img} alt="Shoes" />
-      
+      </div>
     </div>
   );
 };
 
 export default GalleryCard;
-

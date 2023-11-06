@@ -13,17 +13,28 @@ const Gallery = () => {
     photos: [], // Initialize photos as an empty array
   });
 
- useEffect(() => {
-   // Fetch the gallery data from gallery.json
-   fetch("gallery.json")
-     .then((res) => res.json())
-     .then((data) =>
-       setState({
-         ...state,
-         photos: data,
-       })
-     );
- }, []);
+useEffect(() => {
+  // Fetch the gallery data from localStorage
+  const cachedPhotos = localStorage.getItem("galleryPhotos");
+  if (cachedPhotos) {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        photos: JSON.parse(cachedPhotos),
+      };
+    });
+  } else {
+    // If no cached data, fetch it from the server as you do now
+    fetch("gallery.json")
+      .then((res) => res.json())
+      .then((data) =>
+        setState({
+          ...state,
+          photos: data,
+        })
+      );
+  }
+}, []);
 
 
   const { photos, selected ,count} = state;
@@ -38,29 +49,43 @@ const handleIPhotoUploader = (event) => {
       img: URL.createObjectURL(selectedFile),
     };
 
+    // Update the state
     setState((prevState) => {
+      const updatedPhotos = [...prevState.photos, newImage];
+      localStorage.setItem("galleryPhotos", JSON.stringify(updatedPhotos)); // Store in local storage
       return {
         ...prevState,
-        photos: [...prevState.photos, newImage],
+        photos: updatedPhotos,
       };
     });
   }
 };
 
-  const handelDelete = () => {
-    const selectedIds = new Set(selected); // create a set of selected gallery IDs
 
-    const remainingPhotos = photos.filter(
-      (photo) => !selectedIds.has(photo.gallery_id)
-    );
+ const handelDelete = () => {
+   const selectedIds = new Set(selected); // create a set of selected gallery IDs
 
-    setState({
-      ...state,
-      count: 0, // reset count to 0
-      selected: [], // clear the selected items
-      photos: remainingPhotos, // update the remaining photos
-    });
-  };
+   const remainingPhotos = photos.filter(
+     (photo) => !selectedIds.has(photo.gallery_id)
+   );
+
+   // Remove deleted photos from localStorage
+   const updatedLocalStoragePhotos = JSON.parse(
+     localStorage.getItem("galleryPhotos") || "[]"
+   ).filter((photo) => !selectedIds.has(photo.gallery_id));
+   localStorage.setItem(
+     "galleryPhotos",
+     JSON.stringify(updatedLocalStoragePhotos)
+   );
+
+   setState({
+     ...state,
+     count: 0, // reset count to 0
+     selected: [], // clear the selected items
+     photos: remainingPhotos, // update the remaining photos
+   });
+ };
+
 
   const draggingGrid = (index, hoverIndex) => {
     setState(

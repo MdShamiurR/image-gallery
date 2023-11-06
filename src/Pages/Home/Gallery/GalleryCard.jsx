@@ -89,7 +89,10 @@ drag(drop(ref));
       ref={ref}
       data-handler-id={handlePhotoId}
       draggable
-      className="card bg-base-100 "
+      // className="card bg-base-100 w-full h-full"
+      className={`card bg-base-100 w-full h-full ${
+        !isFirstService ? "small-img" : ""
+      }`}
       style={{
         ...dynamicStyle,
 
@@ -97,11 +100,10 @@ drag(drop(ref));
         border: "1px solid gray",
         cursor: "move",
         borderRadius: "10px",
-        
       }}
     >
       <img
-        style={{ objectFit: "cover" }}
+        style={{ objectFit: "contain" }}
         className="w-full h-full border-1 rounded-lg"
         src={gallery.img}
         alt="Shoes"
@@ -126,7 +128,6 @@ drag(drop(ref));
         className="hide w-full h-full bg-[#00000067] rounded p-4"
       >
         <input
-          
           onClick={() => handleCheckboxChange(gallery.gallery_id)}
           onChange={() => {
             setChecked(!checked);

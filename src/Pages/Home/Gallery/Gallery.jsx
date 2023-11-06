@@ -96,7 +96,7 @@ const handleIPhotoUploader = (event) => {
       </div>
 
       <DndProvider backend={HTML5Backend}>
-        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 grid-rows-3  md:grid-rows-2 gap-4 p-5 photoGrid">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 grid-rows-3  md:grid-rows-2 gap-4 p-5 photoGrid ">
           {photos.map((gallery, index) => (
             <GalleryCard
               key={index}
@@ -116,7 +116,7 @@ const handleIPhotoUploader = (event) => {
               position: "relative",
             }}
           >
-            <img src={addImg} alt="addImage" />
+            <img  className="" src={addImg} alt="addImage" />
             <input
               className="w-full h-full photoUploader"
               style={{

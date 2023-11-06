@@ -13,3 +13,6 @@
   animation: hideAnimation 0.3s ease-in-out forwards;
   opacity: 0.7;
 }
+.small-img img {
+  max-height: 174px;
+}
